@@ -15,10 +15,17 @@ dir = 'C:\Users\87123\OneDrive - Griffith University\____Current_Project_data\_P
 
 
 % specify the bone being processed 
-fem_file = fullfile(dir, 'TD12_femur_r.mat');
+fem_file = fullfile(dir_test_STAPLE_tri, 'femur_r.mat');
+
+% fem_file = fullfile(dir, 'TD12_femur_r.mat');
 
 % load the tri .mat
 fem_tri = load_mesh(fem_file);
 
 % visualise 
 trimesh(fem_tri)
+
+% parameters
+side = 'r'
+
+GIBOC_femur(fem_tri,side, 'cylinder')
