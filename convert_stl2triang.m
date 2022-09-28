@@ -19,7 +19,7 @@ addpath(genpath('./STAPLE'))
 % dataset_folder = './bone_datasets/JIA_MRI';
 % dataset_folder = './bone_datasets/__upper';
 
-dataset_folder = 'C:\Users\87123\OneDrive - Griffith University\____Current_Project_data\_Project_2_KNEE\_Keypoint_ID\femur_geometric_test\femur';
+dataset_folder = 'E:\OneDrive - Griffith University\____Current_Project_data\_Project_2_KNEE\_Keypoint_ID\femur_geometric_test\femur\riad_masterdataset';
 
 % folder where to store the resulting triangulations
 triang_folder = [dataset_folder, filesep, 'tri'];
