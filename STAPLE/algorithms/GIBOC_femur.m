@@ -160,6 +160,10 @@ if nargout>3
     ArtSurf.(['hip_', side_raw])       = FemHeadTri;
     ArtSurf.(['med_cond_', side_raw])  = fullCondyle_Med_Tri;
     ArtSurf.(['lat_cond_', side_raw])  = fullCondyle_Lat_Tri;
+    %%% changes
+    ArtSurf.(['post_med_cond_', side_raw])  = fullCondyle_Med_Tri;
+    ArtSurf.(['post_lat_cond_', side_raw])  = fullCondyle_Lat_Tri;
+    %%% changes
     ArtSurf.(['dist_femur_', side_raw])= DistFemTri;
     ArtSurf.(['condyles_', side_raw])  = TriUnite(fullCondyle_Med_Tri, fullCondyle_Lat_Tri);
 end
