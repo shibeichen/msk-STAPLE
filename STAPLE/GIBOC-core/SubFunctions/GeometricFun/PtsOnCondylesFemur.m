@@ -1,9 +1,14 @@
-function [ PtsCondyle_end, PtsKeptID ] = PtsOnCondylesFemur( PtsCondyle_0 , Pts_Epiphysis, CutAngle, InSetRatio, ellip_dilat_fact )
+function [ PtsCondyle_end, PtsKeptID ] = PtsOnCondylesFemur( PtsCondyle_0 , Pts_Epiphysis, CutAngle, InSetRatio, ellip_dilat_fact, debug_plots )
 %PtsOnCondylesF : Find points on condyles from a first 2D ellipse Fit on
 %points identifies as certain to be on the condyle [PtsCondyle_0] and get
 % points in +- 5 % intervall of the fitted ellipse
 % Points must be expressed in Coordinate system where Y has been identified
 % as a good initial candidates for ML axis
+
+%%% changes %%% 
+% add debug_plot
+if nargin<6;    debug_plots = 0;         end
+%%% changes %%% 
 
 Elps = fit_ellipse( PtsCondyle_0(:,3),PtsCondyle_0(:,1));
 
@@ -75,21 +80,27 @@ horz_line       = [ Elps.X0+Elps.a*[-1 1]; [Elps.Y0 Elps.Y0] ];
 new_ver_line    = R*ver_line;
 new_horz_line   = R*horz_line;
 
-% figure()
-% plot(Pts_Epiphysis(:,3),Pts_Epiphysis(:,1),'g.')
-% hold on
-% axis equal
-% % plot(Pts_Epiphysis(OUT_Elps,3),Pts_Epiphysis(OUT_Elps,1),'c*')
-% plot( rotated_ellipse(:,1),rotated_ellipse(:,2),'r' );
-% plot(Pts_Epiphysis(I_kept,3),Pts_Epiphysis(I_kept,1),'rs')
-% plot( new_ver_line(1,:),new_ver_line(2,:),'r' );
-% plot( new_horz_line(1,:),new_horz_line(2,:),'r' );
-% quiver(Elps.X0_in,Elps.Y0_in,50*cos(-Elps.phi),50*sin(-Elps.phi));
-% quiver(Elps.X0_in,Elps.Y0_in,50*sin(Elps.phi),50*cos(Elps.phi));
-% plot(mean(Pts_Epiphysis(:,3)),mean(Pts_Epiphysis(:,1)),'ks')
-% plot(Pts_Epiphysis(I,3),Pts_Epiphysis(I,1),'ks')
-% plot(PtsCondyle_0(K,3),PtsCondyle_0(K,1),'k-')
-% plot(PtsCondyle_0(:,3),PtsCondyle_0(:,1),'kd')
-% plot(PtsCondyle_0(:,3),PtsCondyle_0(:,1),'k*')
+%%% changes %%%
+if debug_plots
+    % this part was comment out. Re-open for testing. 
+    %  plot the ellipse and the reduced one. 
+    figure();
+    plot(Pts_Epiphysis(:,3),Pts_Epiphysis(:,1),'g.')
+    hold on
+    axis equal
+    % plot(Pts_Epiphysis(OUT_Elps,3),Pts_Epiphysis(OUT_Elps,1),'c*')
+    plot( rotated_ellipse(:,1),rotated_ellipse(:,2),'r' );
+    plot(Pts_Epiphysis(I_kept,3),Pts_Epiphysis(I_kept,1),'rs')
+    plot( new_ver_line(1,:),new_ver_line(2,:),'r' );
+    plot( new_horz_line(1,:),new_horz_line(2,:),'r' );
+    quiver(Elps.X0_in,Elps.Y0_in,50*cos(-Elps.phi),50*sin(-Elps.phi));
+    quiver(Elps.X0_in,Elps.Y0_in,50*sin(Elps.phi),50*cos(Elps.phi));
+    plot(mean(Pts_Epiphysis(:,3)),mean(Pts_Epiphysis(:,1)),'ks')
+    plot(Pts_Epiphysis(I,3),Pts_Epiphysis(I,1),'ks')
+    plot(PtsCondyle_0(K,3),PtsCondyle_0(K,1),'k-')
+    plot(PtsCondyle_0(:,3),PtsCondyle_0(:,1),'kd')
+    plot(PtsCondyle_0(:,3),PtsCondyle_0(:,1),'k*')
+end
+%%% changes %%%
 end
 

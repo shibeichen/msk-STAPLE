@@ -17,6 +17,17 @@ switch art_surface
         CutAngle_Med = 85;
         InSetRatio = 0.8;
         ellip_dilat_fact = 0.025;
+        
+        %%% changes %%%
+        %%% quick test %%%
+        % PARAMETERS
+        CutAngle_Lat = 70;
+        CutAngle_Med = 85;
+        InSetRatio = 0.8;
+        ellip_dilat_fact = 0.025;
+        %%% changes %%%
+        %%% quick test %%% 
+
     case 'post_condyles'
         % Identify posterior part of condyles (points)
         % PARAMETERS
@@ -24,6 +35,17 @@ switch art_surface
         CutAngle_Med = 25;
         InSetRatio = 0.6;
         ellip_dilat_fact = 0.025;
+
+        %%% changes %%%
+        %%% quick test %%%
+        % PARAMETERS
+        CutAngle_Lat = 10;
+        CutAngle_Med = 25;
+        InSetRatio = 0.9;
+        ellip_dilat_fact = 0.025;
+        %%% changes %%%
+        %%% quick test %%% 
+        
     case 'pat_groove'
         % same as posterior
         CutAngle_Lat = 10;
@@ -55,7 +77,6 @@ PtsCondylesLat = EpiFem.Points(IdCdlPts(:,med_lat_ind(2)),:);
 % % debugging plots: plotting the lines between the points identified
 if debug_plots
     figure
-    title('Line betweeen trace of condyles (Lat=black)')
     plot3(PtsCondylesLat(:,1), PtsCondylesLat(:,2), PtsCondylesLat(:,3),'ko');hold on
     plot3(PtsCondylesMed(:,1), PtsCondylesMed(:,2), PtsCondylesMed(:,3),'ro');
     N=size(PtsCondylesLat,1)*2;
@@ -63,6 +84,9 @@ if debug_plots
     for n= 1:N-1
         plot3(xP(n:n+1,1), xP(n:n+1,2), xP(n:n+1,3), 'k-', 'LineWidth', 2)
     end
+    title('Line betweeen trace of condyles (Lat=black)')
+    %%% changes plot the geometry as well
+    quickPlotTriang(EpiFem,'',0,0.7)
 end
 
 %% New temporary coordinate system (new ML axis guess)
@@ -126,7 +150,7 @@ C2_Pts_DF_2D_RC = Epiphysis_Pts_DF_2D_RC(Epiphysis_Pts_DF_2D_RC(:,2)-Pt_AxisOnSu
 % Identify full articular surface of condyles (points)
 % by fitting an ellipse on long convexhull edges extremities
 ArticularSurface_Lat = PtsOnCondylesFemur( Pts_Proj_CLat , C1_Pts_DF_2D_RC ,...
-                        CutAngle_Lat, InSetRatio, ellip_dilat_fact)*VC';
+                        CutAngle_Lat, InSetRatio, ellip_dilat_fact, debug_plots)*VC'; %%% changes % add debug_plot
 ArticularSurface_Med = PtsOnCondylesFemur( Pts_Proj_CMed , C2_Pts_DF_2D_RC,...
     CutAngle_Med, InSetRatio, ellip_dilat_fact)*VC';
 
@@ -181,6 +205,17 @@ switch art_surface
         % these are triangulations
         DesiredArtSurfLat_Tri = GIBOC_femur_filterCondyleSurf(EpiFem, CSs, ArticularSurface_Lat, Pts_0_C1, CoeffMorpho);
         DesiredArtSurfMed_Tri = GIBOC_femur_filterCondyleSurf(EpiFem, CSs, ArticularSurface_Med, Pts_0_C2, CoeffMorpho);
+
+        %%% changes %%%
+        if debug_plots
+            % Plotting the selected points and the geoemtry 
+            % tuning the point selection. 
+            figure();
+            quickPlotTriang(EpiFem,'',0,0.5);
+            pcshow(ArticularSurface_Lat); pcshow(ArticularSurface_Med);
+            title(sprintf('CutLat:%d CutMed:%d InSetRatio: %0.2f',CutAngle_Lat,CutAngle_Med,InSetRatio))
+        end 
+        %%% changes %%%
     case 'pat_groove'
         % Generating patellar groove triangulations (med and lat)
         % initial estimations of anterior patellar groove (anterior to mid point)

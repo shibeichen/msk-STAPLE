@@ -159,6 +159,7 @@ disp('  Step #1: identify tibiofem artic surfaces')
 % debug plots
 if debug_plots == 1
     quickPlotTriang(EpiTibASTri, [], 1);hold on
+    quickPlotTriang(EpiTibTri,[],0,0.3)     % add, plot the epiphysis 
     title('STEP1: Full proximal Articular Surface')
 end
 
@@ -169,6 +170,7 @@ EpiTibASTri = GIBOC_tibia_ProxArtSurf_it1(ProxTibTri, EpiTibTri, EpiTibASTri, Au
 % debug plots
 if debug_plots == 1
     quickPlotTriang(EpiTibASTri, [], 1);hold on
+    quickPlotTriang(EpiTibTri,[],0,0.3)     % add, plot the epiphysis 
     title('STEP2: Full proximal Articular Surface (central ridge removed)')
 end
 
@@ -198,8 +200,12 @@ end
 
 % debug plots
 if debug_plots == 1
-    quickPlotTriang(EpiTibArtSurfTri, [], 1);hold on
-    title('STEP3: Final Articular Surface (refined)')
+    %quickPlotTriang(EpiTibArtSurfTri, [], 1);hold on
+    figure();
+    quickPlotTriang(EpiTibASLatTri,'b');
+    quickPlotTriang(EpiTibASMedTri,'r');
+    quickPlotTriang(EpiTibTri,[],0,0.3);     % add, plot the epiphysis 
+    title('STEP3: Final Articular Surface (refined) (red: medial)')
 end
 
 % compute joint coord system

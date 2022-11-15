@@ -144,7 +144,8 @@ disp('Extracting femoral condyles articular surfaces...')
 [fullCondyle_Med_Tri, fullCondyle_Lat_Tri, AuxCSInfo] = GIBOC_femur_ArticSurf(EpiFemTri, AuxCSInfo, CoeffMorpho, 'full_condyles', debug_plots);
 % plot condyles to ensure medial and lateral sides are correct and surfaces are ok
 if debug_plots
-    figure(); subplot(1,2,1);
+    figure(); 
+    %subplot(1,2,1);
     quickPlotTriang(femurTri); quickPlotTriang(fullCondyle_Lat_Tri,'b'); quickPlotTriang(fullCondyle_Med_Tri,'r');
     title('Full Condyles (red: medial)');
 end
@@ -172,10 +173,10 @@ if nargout>3
     ArtSurf.(['med_cond_', side_raw])  = fullCondyle_Med_Tri;
     ArtSurf.(['lat_cond_', side_raw])  = fullCondyle_Lat_Tri;
 
-    %%% changes
+    %%%% changes %%%
     ArtSurf.(['post_med_cond_', side_raw])  = postCondyle_Med_Tri;
     ArtSurf.(['post_lat_cond_', side_raw])  = postCondyle_Lat_Tri;
-    %%% changes
+    %%%% changes %%%
 
     ArtSurf.(['dist_femur_', side_raw])= DistFemTri;
     ArtSurf.(['condyles_', side_raw])  = TriUnite(fullCondyle_Med_Tri, fullCondyle_Lat_Tri);
