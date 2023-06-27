@@ -23,6 +23,18 @@ if nargin < 5; debug_prints = 0; end
 % FemHead_dil_coeff = 1.5;
 %norm_thres
 
+%%% changes %%%
+
+% Params that control the iterative sphere fitting. 
+
+% FemHead_dil_coeff 
+FemHead_dil_coeff = 1.5; % default 1.5
+
+% nbElemts : The number of neigbour elements/facets that will be dilated (analog to the number of pixel of the dilation)
+nbElemts = 100; % default 40
+
+%%% changes %%%
+
 disp('Computing centre of femoral head:')
 
 % Find the most proximal on femur top head
@@ -32,7 +44,7 @@ I_Top_FH = [I_Top_FH ProxFem.neighbors(I_Top_FH)];
 % triang around it
 Face_Top_FH = TriReduceMesh(ProxFem,I_Top_FH);
 % create a triang with them
-[ Patch_Top_FH ] = TriDilateMesh( ProxFem ,Face_Top_FH , 40*CoeffMorpho);
+[ Patch_Top_FH ] = TriDilateMesh( ProxFem ,Face_Top_FH , nbElemts*CoeffMorpho);
 
 % Get an initial ML Axis Y0 (pointing medio-laterally)
 % NB: from centerVol, OT points upwards to ~HJC, that is more medial than
@@ -44,7 +56,7 @@ CSs.Y0 = normalizeV(  cross(cross(CSs.Z0,OT),CSs.Z0)  );
 [~ , I_MM_FH] = max( ProxFem.incenter*CSs.Y0 );
 I_MM_FH = [I_MM_FH ProxFem.neighbors(I_MM_FH)];
 Face_MM_FH = TriReduceMesh(ProxFem,I_MM_FH);
-[ Patch_MM_FH ] = TriDilateMesh( ProxFem ,Face_MM_FH , 40*CoeffMorpho );
+[ Patch_MM_FH ] = TriDilateMesh( ProxFem ,Face_MM_FH , nbElemts*CoeffMorpho );
 
 % STEP1: first sphere fit
 FemHead0 = TriUnite(Patch_MM_FH,Patch_Top_FH);
@@ -72,7 +84,9 @@ end
 % STEP2: dilate femoral head mesh and sphere fit again
 % IMPORTANT: TriDilateMesh "grows" the original mesh, does not create a
 % larger one!
-FemHead_dil_coeff = 1.5;
+
+% FemHead_dil_coeff = 1.5;
+
 [ DilateFemHeadTri] = TriDilateMesh( ProxFem ,FemHead0 , round(FemHead_dil_coeff*Radius*CoeffMorpho));
 [CenterFH, RadiusDil, ErrorDistCond] = sphereFit(DilateFemHeadTri.Points);
 sph_RMSECond = mean(abs(ErrorDistCond));
