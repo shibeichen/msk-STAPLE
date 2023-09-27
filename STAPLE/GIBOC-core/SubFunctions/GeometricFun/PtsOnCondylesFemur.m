@@ -1,5 +1,5 @@
 function [ PtsCondyle_end, PtsKeptID ] = PtsOnCondylesFemur( PtsCondyle_0 , Pts_Epiphysis, CutAngle, InSetRatio, ellip_dilat_fact, debug_plots )
-%PtsOnCondylesF : Find points on condyles from a first 2D ellipse Fit on
+%PtsOnCondylesF : Find points on condyles from a first 2D ellipse Fit onCutAngle_Lat
 %points identifies as certain to be on the condyle [PtsCondyle_0] and get
 % points in +- 5 % intervall of the fitted ellipse
 % Points must be expressed in Coordinate system where Y has been identified

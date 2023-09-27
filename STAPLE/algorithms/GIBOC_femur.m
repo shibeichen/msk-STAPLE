@@ -154,7 +154,12 @@ end
 % on long convexhull edges extremities
 [postCondyle_Med_Tri, postCondyle_Lat_Tri, AuxCSInfo] = GIBOC_femur_ArticSurf(EpiFemTri, AuxCSInfo,  CoeffMorpho, 'post_condyles', debug_plots);
 
-%%%% changes %%%
+%%%% changes %%%  % add plotting, add patella section (save to outptu), 
+
+% extract patellar grooves
+[Groove_Med, Groove_Lat, CS] = GIBOC_femur_ArticSurf(EpiFemTri, AuxCSInfo,  CoeffMorpho, 'pat_groove', debug_plots);
+% Fit two spheres to patellar groove
+% CS = CS_femur_SpheresOnPatellarGroove(Groove_Lat, Groove_Med, CS);
 
 % plot postCondyle for testing 
 if debug_plots
@@ -163,7 +168,12 @@ if debug_plots
     title('postCondyle (red: medial)');
 end
 
-%%%% changes %%%
+% plot patella groove for testing 
+if debug_plots
+    figure(); 
+    quickPlotTriang(EpiFemTri); quickPlotTriang(Groove_Lat,'b'); quickPlotTriang(Groove_Med,'r');
+    title('Patellar groove (red: medial)');
+end
 
 % exporting articular surfaces (more triangulations can be easily added
 % commenting out the parts of interest
@@ -176,16 +186,17 @@ if nargout>3
     %%%% changes %%%
     ArtSurf.(['post_med_cond_', side_raw])  = postCondyle_Med_Tri;
     ArtSurf.(['post_lat_cond_', side_raw])  = postCondyle_Lat_Tri;
+    % Svae Patellar groove"
+    ArtSurf.(['anterior_med_cond_', side_raw])  = Groove_Med;
+    ArtSurf.(['anterior_lat_cond_', side_raw])  = Groove_Lat;
+
     %%%% changes %%%
 
     ArtSurf.(['dist_femur_', side_raw])= DistFemTri;
     ArtSurf.(['condyles_', side_raw])  = TriUnite(fullCondyle_Med_Tri, fullCondyle_Lat_Tri);
 end
 
-% extract patellar grooves
-% [Groove_Med, Groove_Lat, CS] = GIBOC_femur_ArticSurf(EpiFem, CS, CoeffMorpho, 'pat_groove');
-% Fit two spheres to patellar groove
-% CS = CS_femur_SpheresOnPatellarGroove(Groove_Lat, Groove_Med, CS);
+%%%% changes %%%
 
 % how to compute the joint axes
 disp(['Fitting femoral distal articular surfaces using ', fit_method, ' method...'])

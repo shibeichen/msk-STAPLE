@@ -47,11 +47,20 @@ switch art_surface
         %%% quick test %%% 
         
     case 'pat_groove'
-        % same as posterior
-        CutAngle_Lat = 10;
-        CutAngle_Med = 25;
-        InSetRatio = 0.6;
+        % % same as posterior
+        % CutAngle_Lat = 10;
+        % CutAngle_Med = 25;
+        % InSetRatio = 0.6;
+        % ellip_dilat_fact = 0.025;
+
+        %%% changes %%%  testing new params for patella
+        %%% quick test %%%
+        % PARAMETERS
+        CutAngle_Lat = 100;
+        CutAngle_Med = 100;
+        InSetRatio = 0.9;
         ellip_dilat_fact = 0.025;
+        %%% changes %%%
     otherwise
 end
 
@@ -216,18 +225,34 @@ switch art_surface
             title(sprintf('CutLat:%d CutMed:%d InSetRatio: %0.2f',CutAngle_Lat,CutAngle_Med,InSetRatio))
         end 
         %%% changes %%%
+    
+    %%% changes %%% case 'pat_groove' Get the anterior of the full art. condyle 
     case 'pat_groove'
-        % Generating patellar groove triangulations (med and lat)
-        % initial estimations of anterior patellar groove (anterior to mid point)
-        % (points)
-        ant_lat = C1_Pts_DF_2D_RC(C1_Pts_DF_2D_RC(:,1)-Pt_AxisOnSurf_proj(1)>0,:)*VC';
-        ant_med = C2_Pts_DF_2D_RC(C2_Pts_DF_2D_RC(:,1)-Pt_AxisOnSurf_proj(1)>0,:)*VC';
-        % anterior to notch (points)
-        PtsGroove_Lat = ant_lat(ant_lat*X1>PtNotch*X1,:);
-        PtsGroove_Med = ant_med(ant_med*X1>PtNotch*X1,:);
-        % triangulations of medial and lateral patellar groove surfaces
-        DesiredArtSurfLat_Tri = GIBOC_femur_filterCondyleSurf(EpiFem, CSs, PtsGroove_Lat, Pts_0_C1, CoeffMorpho);
-        DesiredArtSurfMed_Tri = GIBOC_femur_filterCondyleSurf(EpiFem, CSs, PtsGroove_Med, Pts_0_C1, CoeffMorpho);
+        % Similar to case 'post_condyles', delete the posterior pts to the femoral notch
+        ArticularSurface_Lat(ArticularSurface_Lat*X1<PtNotch*X1,:)=[];
+        ArticularSurface_Med(ArticularSurface_Med*X1<PtNotch*X1,:)=[];
+        Pts_0_C1(Pts_0_C1*X1<PtNotch*X1,:)=[];
+        Pts_0_C2(Pts_0_C2*X1<PtNotch*X1,:)=[];
+        
+        % Filter with curvature and normal orientation to keep only the post parts
+        % these are triangulations
+        DesiredArtSurfLat_Tri = GIBOC_femur_filterCondyleSurf(EpiFem, CSs, ArticularSurface_Lat, Pts_0_C1, CoeffMorpho);
+        DesiredArtSurfMed_Tri = GIBOC_femur_filterCondyleSurf(EpiFem, CSs, ArticularSurface_Med, Pts_0_C2, CoeffMorpho);
+
+    %%% changes %%%
+    % Original under development case 'pat_groove'
+    % case 'pat_groove'
+    %     % Generating patellar groove triangulations (med and lat)
+    %     % initial estimations of anterior patellar groove (anterior to mid point)
+    %     % (points)
+    %     ant_lat = C1_Pts_DF_2D_RC(C1_Pts_DF_2D_RC(:,1)-Pt_AxisOnSurf_proj(1)>0,:)*VC';
+    %     ant_med = C2_Pts_DF_2D_RC(C2_Pts_DF_2D_RC(:,1)-Pt_AxisOnSurf_proj(1)>0,:)*VC';
+    %     % anterior to notch (points)
+    %     PtsGroove_Lat = ant_lat(ant_lat*X1>PtNotch*X1,:);
+    %     PtsGroove_Med = ant_med(ant_med*X1>PtNotch*X1,:);
+    %     % triangulations of medial and lateral patellar groove surfaces
+    %     DesiredArtSurfLat_Tri = GIBOC_femur_filterCondyleSurf(EpiFem, CSs, PtsGroove_Lat, Pts_0_C1, CoeffMorpho);
+    %     DesiredArtSurfMed_Tri = GIBOC_femur_filterCondyleSurf(EpiFem, CSs, PtsGroove_Med, Pts_0_C1, CoeffMorpho);
     otherwise
 end
 
